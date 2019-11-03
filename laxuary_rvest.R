@@ -8,8 +8,9 @@ agent <- httr::user_agent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) Apple
 
 login_page <- html_session("https://myluxurycard.co.jp", agent)
 
-login_form <- html_form(login_page)[[1]] %>% 
-  set_values(webMemberId="user", webMemberPass="pass")
+login_form <- html_form(login_page) %>% 
+  extract2(1) %>% 
+  set_values(webMemberId = Sys.getenv("LAXURY_USER"), webMemberPass=Sys.getenv("LAXURY_PASS"))
 
 session <- submit_form(login_page, login_form)
 
