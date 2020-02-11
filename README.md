@@ -3,8 +3,7 @@
 ```
 source("scraping.R")
 
-session <- get_new_session()
-get_bill(session, no = 1)
+get_bill(no = 1)
 ```
 
 ```

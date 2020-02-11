@@ -20,7 +20,11 @@ get_new_session <- function() {
 }
 
 get_session_recycle <- function() {
-  exists("session")
+  if (!exists("session")) 
+    session <<- get_new_session()
+  else if (session$response$date - lubridate::now() < -minutes(30))
+    session <<- get_new_session()
+  return(session)
 }
 
 get_bill_url <- function(no) {
@@ -34,11 +38,8 @@ get_bill_url <- function(no) {
   return(url)
 }
 
-get_bill <- function(session, no = 1) {
-  assertthat::assert_that(is.session(session))
-  if (lubridate::now() - session$response$date > lubridate::dminutes(10))
-    session <- get_new_session()
-  
+get_bill <- function(no = 1) {
+  session <- get_session_recycle()
   url <- get_bill_url(no)
   
   page <- session %>% 
