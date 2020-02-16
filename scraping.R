@@ -63,10 +63,8 @@ get_bill <- function(no = 1) {
     head(-5) %>% 
     set_names(c("date", "name", "pay", "spacies", "times", "monthly_times", "monthly_pay", "note")) %>% 
     select(date, name, pay) %>% 
-    filter(date != "")
+    filter(date != "") %>% 
+    mutate(tag = str_sub(invoice_date, 1, 7))
   
-  return(list(
-    date = invoice_date,
-    invoice = invoice
-  ))
+  return(invoice)
 }
