@@ -9,6 +9,8 @@ get_new_session <- function() {
   agent_str <- paste("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2)",
                      "AppleWebKit/537.36 (KHTML, like Gecko)",
                      "Chrome/71.0.3578.98 Safari/537.36")
+  load_dot_env()
+  
   agent <- httr::user_agent(agent_str)
   login_page <- html_session("https://myluxurycard.co.jp", agent)
   login_form <- html_form(login_page) %>% 
@@ -19,8 +21,8 @@ get_new_session <- function() {
   return(session)
 }
 
-get_session_recycle <- function() {
-  if (!exists("session")) 
+get_session_recycle <- function(force = FALSE) {
+  if (!exists("session") | force) 
     session <<- get_new_session()
   else if (session$response$date - lubridate::now() < -minutes(30))
     session <<- get_new_session()

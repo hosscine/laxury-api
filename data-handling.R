@@ -1,7 +1,7 @@
 
 store_bill <- function(bill) {
-  if (exists(bills))
-    bills <<- bind_rows(bills, bill) %>% distinct()
+  if (exists("bills"))
+    bills <<- bind_rows(bill, bills) %>% distinct()
   else
     bills <<- bill
 
@@ -24,11 +24,27 @@ add_dict <- function(name) {
 }
 
 tag2no <- function(tag) {
+  df <- tibble(
+    day = seq(tag2day(origin_tag), tag2day(latest_tag()), by = "month")
+  ) %>% 
+    mutate(no = day %>% length %>% sequence %>% rev)
   
+  tibble(day = tag2day(tag)) %>% 
+    inner_join(df, by = "day") %>% 
+    pull(no)
+}
+
+tag2day <- function(tag) {
+  paste(tag, 17, 09) %>% ymd_h()
 }
 
 update_bills <- function() {
-  
+  stored_tag <- bills$tag %>% max
+  if (stored_tag != latest_tag())
+    tag2no(stored_tag) %>% 
+    magrittr::subtract(1) %>%
+    sequence() %>% 
+    map(~ get_bill(.) %>% store_bill)
 }
 
 latest_tag <- function() {
@@ -38,8 +54,15 @@ latest_tag <- function() {
   return(format(latest_day, "%Y-%m"))
 }
 
+init_bills <- function() {
+  origin_tag %>% 
+    tag2no() %>% 
+    sequence() %>% print %>% 
+    map(~ get_bill(.) %>% store_bill)
+}
+
 origin_tag <- "2019-05"
 
-find_bill <- function(tag) {
-  bills
+find_bill <- function(.tag) {
+  bills %>% filter(tag %in% .tag)
 }
