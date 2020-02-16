@@ -1,4 +1,4 @@
-# Laxury API
+# Luxury API
 
 ```
 source("scraping.R")

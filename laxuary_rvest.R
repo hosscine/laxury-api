@@ -11,7 +11,7 @@ login_page <- html_session("https://myluxurycard.co.jp", agent)
 
 login_form <- html_form(login_page) %>% 
   extract2(1) %>% 
-  set_values(webMemberId = Sys.getenv("LAXURY_USER"), webMemberPass=Sys.getenv("LAXURY_PASS"))
+  set_values(webMemberId = Sys.getenv("LUXURY_USER"), webMemberPass=Sys.getenv("LUXURY_PASS"))
 
 session <- submit_form(login_page, login_form)
 
