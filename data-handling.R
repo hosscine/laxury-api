@@ -8,14 +8,12 @@ store_bill <- function(bill) {
   save(bills, file = "bills.RData")
 }
 
-shared_bill <- function(bill, dict = dict) {
-  bill$invoice %>%
-    filter(name %>% map_lgl(~ str_detect(., dict$name) %>% any))
+shared_bill <- function(bill, .dict = dict) {
+  bill %>% filter(.dict$name %>% map_dfc(~ str_detect(..2, ..1), name) %>% rowSums %>% as.logical)
 }
 
-personal_bill <- function(bill, dict = dict) {
-  bill$invoice %>%
-    filter(name %>% map_lgl(~ str_detect(., dict$name) %>% any) %>% magrittr::not())
+personal_bill <- function(bill, .dict = dict) {
+  bill %>% filter(.dict$name %>% map_dfc(~ str_detect(..2, ..1), name) %>% rowSums %>% magrittr::not())
 }
 
 add_dict <- function(name) {
@@ -64,5 +62,6 @@ init_bills <- function() {
 origin_tag <- "2019-05"
 
 find_bill <- function(.tag) {
+  update_bills()
   bills %>% filter(tag %in% .tag)
 }

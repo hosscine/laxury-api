@@ -1,28 +1,26 @@
 
-#* @get /bill/
-function(no = 1, tag) {
-  if (missing(tag)) bill <- get_bill(as.integer(no))
-  else bill <- search_bill(tag)
+#* @get /bill
+function(tag) {
+  if (missing(tag)) tag <- latest_tag()
+  bill <- find_bill(tag)
   return(bill)
 }
 
 #* @get /bill/list
 function() {
-  no <- as.integer(no)
-  bill <- get_bill(no)
-  return(bill)
+  return(bills$tag %>% unique)
 }
 
 #* @get /bill/shared
-function(no = 1, date) {
-  no <- as.integer(no)
-  bill <- get_bill(no)
+function(tag) {
+  if (missing(tag)) tag <- latest_tag()
+  bill <- find_bill(tag) %>% shared_bill()
   return(bill)
 }
 
 #* @get /bill/personal
-function(no = 1, date) {
-  no <- as.integer(no)
-  bill <- get_bill(no)
+function(tag) {
+  if (missing(tag)) tag <- latest_tag()
+  bill <- find_bill(tag) %>% personal_bill()
   return(bill)
 }
