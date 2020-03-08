@@ -1,9 +1,3 @@
-library(rvest)
-library(tidyverse)
-library(magrittr)
-library(dotenv)
-library(assertthat)
-library(jsonlite)
 
 get_new_session <- function() {
   agent_str <- paste("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2)",
