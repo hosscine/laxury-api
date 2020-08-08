@@ -1,8 +1,22 @@
 
 shared_bill <- function(bill, .dict = dict) {
-  bill %>% filter(.dict$name %>% map_dfc(~ str_detect(..2, ..1), name) %>% rowSums %>% as.logical)
+  target_rows <- .dict$name %>% 
+    map(~ str_detect(bill$name, .)) %>% 
+    unlist() %>% 
+    matrix(ncol = nrow(.dict)) %>% 
+    rowSums() %>% 
+    as.logical()
+  
+  filter(bill, target_rows)
 }
 
 personal_bill <- function(bill, .dict = dict) {
-  bill %>% filter(.dict$name %>% map_dfc(~ str_detect(..2, ..1), name) %>% rowSums %>% magrittr::not())
+  target_rows <- .dict$name %>% 
+    map(~ str_detect(bill$name, .)) %>% 
+    unlist() %>% 
+    matrix(ncol = nrow(.dict)) %>% 
+    rowSums() %>% 
+    magrittr::not()
+  
+  filter(bill, target_rows)
 }
