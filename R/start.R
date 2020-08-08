@@ -12,7 +12,7 @@ pacman::p_load(
   assertthat
 )
 
-here("R/lib") %>% list.files(pattern = "*.R") %>% here("R/lib", .) %>% map(source)
+. <- here("R/lib") %>% list.files(pattern = "*.R") %>% here("R/lib", .) %>% map(source)
 
 if (file.exists(".env")) {
   load_dot_env(here(".env")) 

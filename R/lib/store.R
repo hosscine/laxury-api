@@ -16,9 +16,10 @@ add_dict <- function(name) {
 }
 
 init_bills <- function() {
+  message("[", now(), "]: initializing bill store.")
   origin_tag %>% 
     tag2no() %>% 
-    sequence() %>% print %>% 
+    sequence() %>%
     map(~ get_bill(.) %>% store_bill)
 }
 
@@ -33,9 +34,12 @@ find_bill <- function(.tag) {
 
 update_bills <- function() {
   stored_tag <- bills$tag %>% max
-  if (stored_tag != latest_tag())
+  message("[", now(), "]: currently bills up to ", stored_tag, " are stored.")
+  if (stored_tag != latest_tag()) {
+    message("[", now(), "]: attempting access for Laxury Card Online.")
     tag2no(stored_tag) %>% 
     magrittr::subtract(1) %>%
     sequence() %>% 
     map(~ get_bill(.) %>% store_bill)
+  }
 }
