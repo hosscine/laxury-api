@@ -1,4 +1,4 @@
-# Luxury API
+# Laxury API
 
 ## usage
 

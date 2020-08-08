@@ -76,3 +76,4 @@ vignettes/*.pdf
 
 .env
 bills.RData
+laxury_rvest.R
