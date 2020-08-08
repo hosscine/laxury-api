@@ -1,7 +1,7 @@
 version: '3'
 services: 
   api:
-    build: ./docker
+    build: .
     image: hosscine/laxury-api
     container_name: laxury-api
     restart: always
