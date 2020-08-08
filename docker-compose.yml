@@ -1,0 +1,12 @@
+version: '3'
+services: 
+  api:
+    build: ./docker
+    image: hosscine/laxury-api
+    container_name: laxury-api
+    restart: always
+    ports: 
+      - 8000:8000
+    volumes:
+      - ./data:/data
+    
